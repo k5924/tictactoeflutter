@@ -8,7 +8,17 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String showXorO = '';
+  List<String> showXorO = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +31,14 @@ class _HomePageState extends State<HomePage> {
         ),
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () {
-              setState(() => showXorO = 'O');
-            },
+            onTap: () => setState(() => showXorO[index] = 'O'),
             child: Container(
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
               ),
               child: Center(
                 child: Text(
-                  showXorO,
+                  showXorO[index],
                   style: const TextStyle(fontSize: 40),
                 ),
               ),
