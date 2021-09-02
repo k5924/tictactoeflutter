@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utilities/export.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,36 +22,95 @@ class _HomePageState extends State<HomePage> {
   ];
 
   bool oTurn = true;
+  int oScore = 0;
+  int xScore = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[800],
-      body: GridView.builder(
-        itemCount: 9,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-        ),
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () => setState(() {
-              oTurn ? showXorO[index] = 'O' : showXorO[index] = 'X';
-              oTurn = !oTurn;
-              _checkIfWinner();
-            }),
+      body: Column(
+        children: <Widget>[
+          Expanded(
             child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-              ),
-              child: Center(
-                child: Text(
-                  showXorO[index],
-                  style: const TextStyle(fontSize: 40),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Player X',
+                          style: kTextStyle,
+                        ),
+                        Text(
+                          xScore.toString(),
+                          style: kTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Player O',
+                          style: kTextStyle,
+                        ),
+                        Text(
+                          oScore.toString(),
+                          style: kTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            flex: 3,
+            child: GridView.builder(
+              itemCount: 9,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(
+                  onTap: () => setState(() {
+                    if (oTurn && showXorO[index] == '') {
+                      showXorO[index] = 'O';
+                      oTurn = !oTurn;
+                    } else if (!oTurn && showXorO[index] == '') {
+                      showXorO[index] = 'X';
+                      oTurn = !oTurn;
+                    }
+
+                    _checkIfWinner();
+                  }),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                    ),
+                    child: Center(
+                      child: Text(
+                        showXorO[index],
+                        style: const TextStyle(fontSize: 40),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
       ),
     );
   }
@@ -120,8 +180,33 @@ class _HomePageState extends State<HomePage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('$winner WON'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                _playAgain();
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Play Again!',
+              ),
+            )
+          ],
         );
       },
     );
+
+    if (winner == 'O') {
+      oScore++;
+    } else if (winner == 'X') {
+      xScore++;
+    }
+  }
+
+  void _playAgain() {
+    setState(() {
+      for (int i = 0; i < 9; i++) {
+        showXorO[i] = '';
+      }
+    });
   }
 }
