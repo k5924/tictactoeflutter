@@ -1,31 +1,22 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+
+import '../main.dart';
 import '../utilities/export.dart';
 import '../widgets/export.dart';
 
-class GamePage extends StatefulWidget {
-  const GamePage({Key? key}) : super(key: key);
+class PVEPage extends StatefulWidget {
+  const PVEPage({Key? key}) : super(key: key);
 
   @override
-  _GamePageState createState() => _GamePageState();
+  _PVEPageState createState() => _PVEPageState();
 }
 
-class _GamePageState extends State<GamePage> {
-  List<String> showXorO = [
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-    '',
-  ];
-
+class _PVEPageState extends State<PVEPage> {
   bool oTurn = true;
   int oScore = 0;
   int xScore = 0;
-  int filledBoxes = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -91,17 +82,14 @@ class _GamePageState extends State<GamePage> {
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
                   onTap: () => setState(() {
-                    if (oTurn && showXorO[index] == '') {
+                    if (showXorO[index] == '') {
                       showXorO[index] = 'O';
                       filledBoxes++;
-                      oTurn = !oTurn;
-                    } else if (!oTurn && showXorO[index] == '') {
-                      showXorO[index] = 'X';
                       filledBoxes++;
-                      oTurn = !oTurn;
                     }
 
                     _checkIfWinner();
+                    _bestMove();
                   }),
                   child: Container(
                     decoration: BoxDecoration(
@@ -135,6 +123,129 @@ class _GamePageState extends State<GamePage> {
         ],
       ),
     );
+  }
+
+  void _bestMove() {
+    int i;
+    int score;
+    // AI to make its turn
+    int bestScore = -100;
+    int p = 0;
+    for (i = 0; i < 9; i++) {
+      // Is the spot available?
+      if (showXorO[i] == '') {
+        showXorO[i] = 'X';
+        score = _miniMax(showXorO, 0, false);
+        showXorO[i] = '';
+        if (score > bestScore) {
+          bestScore = score;
+          p = i;
+        }
+      }
+    }
+    showXorO[p] = 'X';
+    _checkIfWinner();
+  }
+
+  Map<String, int> scores = {'X': 1, 'O': -1, 'tie': 0};
+
+  int _miniMax(board, depth, bool isMaximizing) {
+    final result = _checkWinner();
+    if (result == 'X') {
+      return 1;
+    } else if (result == 'O') {
+      return -1;
+    } else if (result == 'DRAW') {
+      return 0;
+    }
+
+    if (isMaximizing) {
+      int bestScore = -100;
+      for (int i = 0; i < 9; i++) {
+        // Is the spot available?
+        if (showXorO[i] == '') {
+          showXorO[i] = 'X';
+          final int score = _miniMax(board, depth + 1, false);
+          showXorO[i] = '';
+          bestScore = max(score, bestScore);
+        }
+      }
+      return bestScore;
+    } else {
+      int bestScore = 100;
+      for (int i = 0; i < 9; i++) {
+        // Is the spot available?
+        if (showXorO[i] == '') {
+          showXorO[i] = 'O';
+          final int score = _miniMax(board, depth + 1, true);
+          showXorO[i] = '';
+          bestScore = min(score, bestScore);
+        }
+      }
+      return bestScore;
+    }
+  }
+
+  dynamic _checkWinner() {
+    // checks 1st row
+    if (filledBoxes != 9) {
+      if (showXorO[0] == showXorO[1] &&
+          showXorO[0] == showXorO[2] &&
+          showXorO[0] != '') {
+        return showXorO[0];
+      }
+
+      // checks 2nd row
+      if (showXorO[3] == showXorO[4] &&
+          showXorO[3] == showXorO[5] &&
+          showXorO[3] != '') {
+        return showXorO[3];
+      }
+
+      // checks 3rd row
+      if (showXorO[6] == showXorO[7] &&
+          showXorO[6] == showXorO[8] &&
+          showXorO[6] != '') {
+        return showXorO[6];
+      }
+
+      // checks 1st column
+      if (showXorO[0] == showXorO[3] &&
+          showXorO[0] == showXorO[6] &&
+          showXorO[0] != '') {
+        return showXorO[0];
+      }
+
+      // checks 2nd column
+      if (showXorO[1] == showXorO[4] &&
+          showXorO[1] == showXorO[7] &&
+          showXorO[1] != '') {
+        return showXorO[1];
+      }
+
+      // checks 3rd column
+      if (showXorO[2] == showXorO[5] &&
+          showXorO[2] == showXorO[8] &&
+          showXorO[2] != '') {
+        return showXorO[2];
+      }
+
+      // checks diagonal
+      if (showXorO[6] == showXorO[4] &&
+          showXorO[6] == showXorO[2] &&
+          showXorO[6] != '') {
+        return showXorO[6];
+      }
+
+      // checks diagonal
+      if (showXorO[0] == showXorO[4] &&
+          showXorO[0] == showXorO[8] &&
+          showXorO[0] != '') {
+        return showXorO[0];
+      }
+    } else {
+      return 'DRAW';
+    }
   }
 
   void _checkIfWinner() {
@@ -225,7 +336,20 @@ class _GamePageState extends State<GamePage> {
               child: const Text(
                 'Play Again!',
               ),
-            )
+            ),
+            TextButton(
+              onPressed: () {
+                _playAgain();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MyApp(),
+                  ),
+                );
+              },
+              child: const Text(
+                'Exit',
+              ),
+            ),
           ],
         );
       },

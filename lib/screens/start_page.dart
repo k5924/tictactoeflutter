@@ -34,7 +34,6 @@ class _StartPageState extends State<StartPage>
                   ),
                 ),
                 Expanded(
-                  flex: 2,
                   child: AvatarGlow(
                     endRadius: 140,
                     repeatPauseDuration: const Duration(seconds: 1),
@@ -66,8 +65,7 @@ class _StartPageState extends State<StartPage>
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const GamePage()),
+                      MaterialPageRoute(builder: (context) => const PVPPage()),
                     );
                   },
                   child: Padding(
@@ -80,7 +78,32 @@ class _StartPageState extends State<StartPage>
                         color: Colors.white,
                         child: Center(
                           child: Text(
-                            'PLAY GAME',
+                            'PVP',
+                            style: kCustomFont,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PVEPage()),
+                    );
+                  },
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 40, right: 40, bottom: 60),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.all(30),
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            'PVE',
                             style: kCustomFont,
                           ),
                         ),
