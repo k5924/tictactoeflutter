@@ -3,6 +3,9 @@
 ## Introduction
 > A Tic Tac Toe Game (if you get 3 in a row you win)
 
+## TODO
+> Combine the fork from [singhdhroov](https://github.com/singhdhroov) found [Here](https://github.com/singhdhroov/tictactoeflutter) so that there is a PVE game mode alongside PVP
+
 ## Credits
 [Mitch Koko](https://github.com/mitchkoko) for his tutorial for Tic Tac Toe on his Youtube Channel [Here](https://www.youtube.com/watch?v=BZaXEIn9jE4&list=PLlvRDpXh1Se6e3FSn5O7VU6tzlndSi3FD)
 

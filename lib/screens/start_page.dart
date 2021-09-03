@@ -66,11 +66,13 @@ class _StartPageState extends State<StartPage>
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const GamePage()),
+                      MaterialPageRoute(
+                          builder: (context) => const GamePage()),
                     );
                   },
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 40, right: 40, bottom: 60),
+                    padding:
+                        const EdgeInsets.only(left: 40, right: 40, bottom: 60),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Container(
