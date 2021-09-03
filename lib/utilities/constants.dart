@@ -1,3 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-TextStyle kTextStyle = const TextStyle(fontSize: 30);
+final TextStyle kCustomFont = GoogleFonts.pressStart2p(
+    textStyle: const TextStyle(letterSpacing: 3, fontSize: 15));

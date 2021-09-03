@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import '../utilities/export.dart';
+import '../widgets/export.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class GamePage extends StatefulWidget {
+  const GamePage({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _GamePageState createState() => _GamePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GamePageState extends State<GamePage> {
   List<String> showXorO = [
     '',
     '',
@@ -29,48 +30,55 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.grey[900],
       body: Column(
         children: <Widget>[
+          const SizedBox(
+            height: 15,
+          ),
           Expanded(
-            child: Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Player X',
-                          style: kTextStyle,
-                        ),
-                        Text(
-                          xScore.toString(),
-                          style: kTextStyle,
-                        ),
-                      ],
-                    ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomTextWidget(
+                        text: 'Player X',
+                        style: kCustomFont,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextWidget(
+                        text: xScore.toString(),
+                        style: kCustomFont,
+                      ),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Player O',
-                          style: kTextStyle,
-                        ),
-                        Text(
-                          oScore.toString(),
-                          style: kTextStyle,
-                        ),
-                      ],
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomTextWidget(
+                        text: 'Player O',
+                        style: kCustomFont,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      CustomTextWidget(
+                        text: oScore.toString(),
+                        style: kCustomFont,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -100,9 +108,11 @@ class _HomePageState extends State<HomePage> {
                       border: Border.all(color: Colors.grey),
                     ),
                     child: Center(
-                      child: Text(
-                        showXorO[index],
-                        style: const TextStyle(fontSize: 40),
+                      child: CustomTextWidget(
+                        text: showXorO[index],
+                        style: kCustomFont.copyWith(
+                          fontSize: 40,
+                        ),
                       ),
                     ),
                   ),
@@ -111,7 +121,16 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           Expanded(
-            child: Container(),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  CustomTextWidget(
+                    text: 'TIC TAC TOE',
+                    style: kCustomFont,
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -176,31 +195,12 @@ class _HomePageState extends State<HomePage> {
         _showWinDialog(showXorO[0]);
       }
     } else {
-      _showDrawDialog();
+      _customDialog('DRAW');
     }
   }
 
   void _showWinDialog(String winner) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('$winner WON'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                _playAgain();
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Play Again!',
-              ),
-            )
-          ],
-        );
-      },
-    );
+    _customDialog('$winner WON');
 
     if (winner == 'O') {
       oScore++;
@@ -209,20 +209,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _showDrawDialog() {
-    showDialog(
+  Future<dynamic> _customDialog(String text) {
+    return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('DRAW'),
+          title: Text(text),
           actions: [
             TextButton(
               onPressed: () {
                 _playAgain();
                 Navigator.of(context).pop();
               },
-              child: Text(
+              child: const Text(
                 'Play Again!',
               ),
             )

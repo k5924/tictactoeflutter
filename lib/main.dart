@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter/services.dart';
 import 'screens/export.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  SystemChrome.setEnabledSystemUIOverlays([]);
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -13,7 +19,7 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
       ),
       debugShowCheckedModeBanner: false,
-      home: const HomePage(),
+      home: StartPage(),
     );
   }
 }
