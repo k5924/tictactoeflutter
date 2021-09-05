@@ -1,0 +1,7 @@
+This was a game I built using flutter. I followed Mitch KoKo's tutorial on YouTube to build the application and I combined the code from a fork of his original code to implement the PVE game mode (by singhdhroov).
+
+***WORKING***
+-PVP game mode
+
+***IN PROGRESS/NEEDS FIXING***
+-PVE game mode: currently the game mode and AI works but the winner has their score incremented twice and the win dialog which displays the play again or exit game message is rendered twice. I plan to fix this in future iterations of the application.

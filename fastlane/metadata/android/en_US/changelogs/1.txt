@@ -1,0 +1,6 @@
+This is the first release.
+
+PVP works correclty. PVE works but the winner of the match has their score incremented twice and the play again/exit game dialog is displayed twice.
+
+
+Issue will be fixed in future releases.
